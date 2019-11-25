@@ -4,6 +4,8 @@ import random
 import pygame
 import sys
 import time
+from tempfile import TemporaryFile
+import matplotlib.pyplot as plt
 
 def gen_points(amount, min, max, w, h, tb):
     pts = []
@@ -28,8 +30,8 @@ g_force = -0.0025 #Gravity
 reward = -1 #Reward for each timestep
 discount = 0.999 #Discount factor
 num_divs = 50 #Number of division for Q-matrix
-iter_max = 500 #Maximum learning iterations
-num_tests = 100 #Number of visual tests after learning
+iter_max = 1000 #Maximum learning iterations
+num_tests = 5 #Number of visual tests after learning
 
 # DISPLAY VARIABLES
 width = 640 #Screen width
@@ -49,6 +51,10 @@ lines = gen_points(500, min_pos, max_pos, width, height, top_buffer)
 #calculating the interval borders
 speedVector = np.arange(-max_vel, max_vel, (max_vel*2) / num_divs)
 positionVector = np.arange(min_pos, max_pos, (max_pos-min_pos) / num_divs)
+
+#Statistics for graphs
+pos = []
+vel = []
 
 def q_learning():
     #Initialise Q-mattrix randomly
@@ -92,7 +98,7 @@ def q_learning():
     print(solution_policy)
     for _ in range(num_tests):
         run_episode(solution_policy,True)
-    return
+    return q_table
 
 def run_episode(policy=None, render=False):
     #Run episode of with the learned policy
@@ -140,4 +146,21 @@ def obs_to_state(obs):
     indexSpeed = sum([obs[1] >= x for x in speedVector]) - 1
     return indexPostion, indexSpeed
 
-q_learning()
+def plot_q_matrix(q):
+    values = np.zeros((num_divs, num_divs))
+    for i in range(0, num_divs):
+        for j in range(0, num_divs):
+            values[i][j] = np.max(q[i, j, :])
+
+    # plot
+    plt.imshow(values, aspect='auto', extent=[-1.2, 0.6, -0.07, 0.07])
+    plt.colorbar()
+    plt.xlabel("position")
+    plt.ylabel("speed")
+    plt.show()
+
+
+#q = q_learning()
+#np.save("qMatrix_"+str(iter_max)+"iters+.npy", q)
+qmat = np.load("qMatrix_"+str(iter_max)+"iters+.npy")
+plot_q_matrix(qmat)
