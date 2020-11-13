@@ -34,16 +34,18 @@ iter_max = 1000 #Maximum learning iterations
 num_tests = 5 #Number of visual tests after learning
 
 # DISPLAY VARIABLES
+pygame.display.set_caption('MountainCarV1.0')
 width = 640 #Screen width
 height = 430 #screen height
-top_buffer = 50 #Buffer for drawing purposes
+top_buffer = 50 #Buffer, for drawing purposes
 
 fps = 60 #Frames per second
-framerate = 1. / fps #fps in seconds
+framerate = 1. / fps #seconds per frame
 
+# create a surface object, image is drawn on it.
+flag = pygame.transform.scale(pygame.image.load('checkerflag.png'),(40, 40))
 flag_length = 30
-flag_bottom = (
-int(width * ((goal + abs(min_pos)) / (max_pos - min_pos))), top_buffer + int(height * (1 - math.sin(3 * goal)) / 2))
+flag_bottom = (int(width * ((goal + abs(min_pos)) / (max_pos - min_pos))), top_buffer + int(height * (1 - math.sin(3 * goal)) / 2))
 flag_top = (int(width * ((goal + abs(min_pos)) / (max_pos - min_pos))),
             top_buffer + int(height * (1 - math.sin(3 * goal)) / 2) - flag_length)
 lines = gen_points(500, min_pos, max_pos, width, height, top_buffer)
@@ -56,9 +58,9 @@ positionVector = np.arange(min_pos, max_pos, (max_pos-min_pos) / num_divs)
 pos = []
 vel = []
 
-def q_learning():
+def q_learning(divs):
     #Initialise Q-mattrix randomly
-    q_table = np.random.rand(num_divs,num_divs,3)
+    q_table = np.random.rand(divs,divs,3)
 
     #Learning Iteratinos
     for i in range(iter_max):
@@ -113,27 +115,31 @@ def run_episode(policy=None, render=False):
     while not done:
         if render:
             pygame.event.get()
-            screen.fill((0, 0, 0))
+            screen.fill((255, 255, 255))
             # Draw Flag
-            pygame.draw.line(screen, (0, 255, 0), flag_bottom, flag_top, 5)
+            #pygame.draw.line(screen, (0, 255, 0), flag_bottom, flag_top, 5)
+
+            screen.blit(flag, (600,10))
             # Draw Mountain
-            pygame.draw.lines(screen, (255, 255, 255), False, lines, 5)
+            pygame.draw.lines(screen, (0, 0, 0), False, lines, 5)
             # Draw Car
             pygame.draw.circle(screen, (255, 0, 0), (int(width * ((environment[0] + abs(min_pos)) / (max_pos - min_pos))),top_buffer + int(height * (1 - math.sin(3 * environment[0])) / 2)), 15, 0)
             pygame.display.update()
             time.sleep(framerate)
 
         if policy is None:
-            action = np.random.choice(np.array([-1,0,1]))
+            action = np.random.choice([-1,0,1])
         else:
             a, b = obs_to_state(observation)
-            action = policy[a][b]
+            act = policy[a][b][:]
+            action = np.argmax(act)
 
         environment[1] += (action - 1) * acc + math.cos(3 * environment[0]) * (g_force)
         environment[1] = np.clip(environment[1], -max_vel, max_vel)
         environment[0] += environment[1]
         environment[0] = np.clip(environment[0], min_pos, max_pos)
-        if (environment[0] == min_pos and environment[1] < 0): environment[1] = 0
+
+        if min_pos == environment[0] and environment[1] < 0: environment[1] = 0
         done = bool(environment[0] >= goal)
 
         tot_r += reward
@@ -159,8 +165,13 @@ def plot_q_matrix(q):
     plt.ylabel("speed")
     plt.show()
 
+#for _ in range(1,10):
+#    num_divs = _*5
+#    q = q_learning(num_divs)
+#    np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
+#q = q_learning(num_divs)
+#np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
 
-#q = q_learning()
-#np.save("qMatrix_"+str(iter_max)+"iters+.npy", q)
-qmat = np.load("qMatrix_"+str(iter_max)+"iters+.npy")
+qmat = np.load("qMatrix_"+str(1000)+"iters+.npy")
+run_episode(qmat, True)
 plot_q_matrix(qmat)
