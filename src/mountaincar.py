@@ -34,7 +34,7 @@ g_force = -0.0025 #Gravity
 alpha = 0.1
 reward = -1 #Reward for each timestep
 discount = 0.618 #Discount factor
-num_divs = 30 #Number of division for Q-matrix
+num_divs = 50 #Number of division for Q-matrix
 iter_max = 1000 #Maximum learning iterations
 threshold_timesteps = 250
 max_timesteps = 10000
@@ -272,3 +272,7 @@ print("Dyna Q-learning")
 qmat = np.load("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy")
 run_episode(qmat, True)
 plot_q_matrix(qmat)
+
+#[Iteration 671 finished after 226 timesteps] for normal
+#[Iteration 14 finished after 250 timesteps]
+
