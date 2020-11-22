@@ -31,13 +31,17 @@ goal = 0.5  #Finish flag
 g_force = -0.0025 #Gravity
 
 #Q-LEARNING VARIABLES
-alpha = 0.1
-reward = -1 #Reward for each timestep
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
 discount = 0.618 #Discount factor
-num_divs = 50 #Number of division for Q-matrix
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+#These should not be changed
+reward = -1 #Reward for each timestep
 iter_max = 1000 #Maximum learning iterations
-threshold_timesteps = 250
-max_timesteps = 10000
+max_timesteps = 10000 #Limit of time for each simulation
 num_tests = 5 #Number of visual tests after learning
 
 # DISPLAY VARIABLES
@@ -101,7 +105,7 @@ def q_learning(divs):
 
             #Look ahead and update
             a_, b_ = obs_to_state(environment)
-            q_table[a][b][action] += alpha*((reward + discount * np.max(q_table[a_][b_][:])) - q_table[a][b][action])
+            q_table[a][b][action] += learning_rate*((reward + discount * np.max(q_table[a_][b_][:])) - q_table[a][b][action])
             t_steps += 1
 
         print("[Iteration " + str(i) + " finished after "+ str(t_steps)+" timesteps]")
@@ -110,8 +114,7 @@ def q_learning(divs):
     solution_policy = np.argmax(q_table, axis=2)
     print("SOLUTION POLICY")
     print(solution_policy)
-    #for _ in range(num_tests):
-    #    run_episode(solution_policy,True)
+
     return q_table
 
 def run_episode(policy=None, render=False):
@@ -131,8 +134,6 @@ def run_episode(policy=None, render=False):
             pygame.event.get()
             screen.fill((255, 255, 255))
             # Draw Flag
-            #pygame.draw.line(screen, (0, 255, 0), flag_bottom, flag_top, 5)
-
             screen.blit(flag, (600,10))
             # Draw Mountain
             pygame.draw.lines(screen, (0, 0, 0), False, lines, 5)
@@ -167,12 +168,7 @@ def dyna_q(divs, dyna_q_iters):
     q_table = np.random.rand(divs,divs,3)
 
     model = dict()
-    model_list = []
 
-    #dyna_q_model = np.random.rand(divs, divs, 3)
-    #dyna_q_model_s1prime = np.random.rand(divs, divs, 3)
-    #dyna_q_model_s2prime = np.random.rand(divs, divs, 3)
-    #history = np.zeros((divs,divs,3))
     i = 0
     t_steps = threshold_timesteps + 1
     # Learning Iteratinos
@@ -184,8 +180,6 @@ def dyna_q(divs, dyna_q_iters):
         t_steps = 0
         done = False
 
-
-
         #Game loop
         while (not done) and (t_steps < max_timesteps):
             #Get Indices of current state of the car
@@ -193,8 +187,6 @@ def dyna_q(divs, dyna_q_iters):
             #Get best actions in this situation
             act = q_table[a][b][:]
             action = np.argmax(act)
-
-            #history[a][b][action] = 1 #Add to history
 
             #Update Environment
             environment[1] += (action - 1) * acc + math.cos(3 * environment[0]) * (g_force)
@@ -209,21 +201,19 @@ def dyna_q(divs, dyna_q_iters):
 
             #Look ahead and update
             a_, b_ = obs_to_state(environment)
-            q_table[a][b][action] += alpha*((reward + discount * np.max(q_table[a_][b_][:])) - q_table[a][b][action])
+            q_table[a][b][action] += learning_rate*((reward + discount * np.max(q_table[a_][b_][:])) - q_table[a][b][action])
             t_steps += 1
 
             #Dyna Q
             model[a, b, action] = (reward, a_, b_)  # store in model, deterministic environment
             model_list = list(model.keys())
-            #model_size = len(model_list)
+
             # Halucinate experience
             for _ in range(dyna_q_iters):
                 #(da, db, dact), (dr, da_, db_) = random.choice(model_list)
                 (da, db, dact) = random.choice(model_list)
                 (dr, da_, db_) = model[da, db, dact]
-                if dr != -1:
-                    print(dr)
-                q_table[da][db][dact] += alpha*((dr + discount * np.max(q_table[da_][db_][:])) - q_table[da][db][dact])
+                q_table[da][db][dact] += learning_rate*((dr + discount * np.max(q_table[da_][db_][:])) - q_table[da][db][dact])
 
         print("[Iteration " + str(i) + " finished after "+ str(t_steps)+" timesteps]")
 
@@ -231,8 +221,7 @@ def dyna_q(divs, dyna_q_iters):
     solution_policy = np.argmax(q_table, axis=2)
     print("SOLUTION POLICY")
     print(solution_policy)
-    #for _ in range(num_tests):
-    #    run_episode(solution_policy,True)
+
     return q_table
 
 def store_visit(model,a,b,act,r,a_,b_):
@@ -260,10 +249,10 @@ def plot_q_matrix(q):
 #    num_divs = _*5
 ##    q = q_learning(num_divs)
 #    np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
-#q = q_learning(num_divs)
-#np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
-#q = dyna_q(num_divs,100)
-#np.save("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
+q = q_learning(num_divs)
+np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
+q = dyna_q(num_divs,dyna_q_iter)
+np.save("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
 qmat = np.load("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy")
 print("Standard Q-learning")
 run_episode(qmat, True)
