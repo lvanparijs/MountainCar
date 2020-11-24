@@ -17,7 +17,7 @@ def gen_points(amount, min, max, w, h, tb):
         pts = pts + [(int(w*i/amount),tb+int(h*(1-math.sin(3 * (step_size*i+min)))/2))]
     return pts
 
-#TODO: Implement Deep Q learning and DynaQ learning and compare to standard Q
+
 
 #CAR VARIABLES
 init_pos = -0.5 #Initial position
