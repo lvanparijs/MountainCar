@@ -1,0 +1,502 @@
+#Q-LEARNING VARIABLES
+
+1
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[1 1 0 ... 1 1 0]
+ [1 1 0 ... 2 1 1]
+ [2 1 2 ... 1 1 1]
+ ...
+ [0 1 0 ... 1 2 1]
+ [2 0 1 ... 1 0 0]
+ [1 2 0 ... 0 1 2]]
+ 
+SOLUTION POLICY
+[[1 2 2 ... 0 1 0]
+ [1 1 2 ... 0 2 2]
+ [2 2 1 ... 0 1 0]
+ ...
+ [0 1 0 ... 0 1 0]
+ [1 1 1 ... 2 0 2]
+ [1 2 0 ... 2 1 1]]
+Standard Q-learning
+finished in 313 timesteps
+Dyna Q-learning
+finished in 234 timesteps
+
+-------------------------------------------------------------------------------------------------2
+
+#Q-LEARNING VARIABLES
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 1000 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+
+SOLUTION POLICY
+[[0 2 0 ... 1 2 2]
+ [2 0 0 ... 0 2 1]
+ [1 0 1 ... 2 2 0]
+ ...
+ [1 1 2 ... 0 0 2]
+ [2 1 1 ... 2 1 2]
+ [0 2 1 ... 0 0 2]]
+
+SOLUTION POLICY
+[[1 0 2 ... 2 0 2]
+ [0 2 2 ... 0 2 1]
+ [2 1 0 ... 2 1 1]
+ ...
+ [1 0 2 ... 1 0 0]
+ [1 0 2 ... 1 2 2]
+ [0 1 2 ... 1 1 1]]
+Standard Q-learning
+finished in 616 timesteps
+Dyna Q-learning
+finished in 290 timesteps
+
+-----------------------------------------------------------------------------------------------3
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 10 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[0 0 0 ... 0 1 2]
+ [2 2 0 ... 0 0 2]
+ [1 1 1 ... 0 2 2]
+ ...
+ [1 2 1 ... 1 1 2]
+ [2 1 2 ... 1 0 0]
+ [1 1 0 ... 0 0 2]]
+Standard Q-learning
+finished in 377 timesteps
+Dyna Q-learning
+finished in 251 timesteps
+
+-------------------------------------------------------------------------------------------------4
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 20 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[2 1 1 ... 0 0 2]
+ [1 0 2 ... 0 0 0]
+ [2 2 2 ... 1 2 1]
+ ...
+ [2 1 2 ... 2 0 2]
+ [1 0 0 ... 0 1 1]
+ [1 0 2 ... 0 1 0]]
+Standard Q-learning
+finished in 375 timesteps
+Dyna Q-learning
+finished in 263 timesteps
+
+-------------------------------------------------------------------------------------------5
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 80 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[0 2 0 ... 0 0 1]
+ [2 2 2 ... 1 0 2]
+ [2 1 2 ... 1 1 2]
+ ...
+ [0 0 0 ... 0 2 2]
+ [0 2 2 ... 1 2 2]
+ [1 2 0 ... 1 2 1]]
+Standard Q-learning
+finished in 518 timesteps
+Dyna Q-learning
+finished in 219 timesteps
+
+------------------------------------------------------------------------------------------------6
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 125 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[2 0 0 ... 2 0 2]
+ [2 1 2 ... 1 0 1]
+ [2 0 0 ... 1 2 1]
+ ...
+ [1 1 2 ... 0 0 1]
+ [2 1 0 ... 1 1 0]
+ [0 2 1 ... 2 1 0]]
+Standard Q-learning
+finished in 336 timesteps
+Dyna Q-learning
+finished in 250 timesteps
+
+---------------------------------------------------------------------------------------------7
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 500 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[2 0 1 ... 2 2 2]
+ [0 0 2 ... 2 2 1]
+ [0 2 1 ... 1 1 2]
+ ...
+ [2 2 0 ... 1 1 2]
+ [1 0 2 ... 1 2 0]
+ [0 2 2 ... 0 0 2]]
+Standard Q-learning
+finished in 351 timesteps
+Dyna Q-learning
+finished in 306 timesteps
+
+-----------------------------------------------------------------------------------------8
+
+#The following are the parameters to test:
+learning_rate = 0.2 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[0 2 2 ... 0 2 1]
+ [1 1 0 ... 2 1 1]
+ [0 2 0 ... 0 1 1]
+ ...
+ [2 0 2 ... 2 2 2]
+ [2 1 1 ... 0 2 1]
+ [0 1 1 ... 2 1 2]]
+Standard Q-learning
+finished in 510 timesteps
+Dyna Q-learning
+finished in 328 timesteps
+
+---------------------------------------------------------------------------------------9
+
+#The following are the parameters to test:
+learning_rate = 0.05 #Learning rate
+discount = 0.618 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[1 0 2 ... 1 1 1]
+ [2 0 2 ... 1 2 2]
+ [0 0 1 ... 1 0 0]
+ ...
+ [0 2 0 ... 2 2 0]
+ [0 0 1 ... 2 1 2]
+ [2 1 2 ... 2 0 1]]
+Standard Q-learning
+finished in 834 timesteps
+Dyna Q-learning
+finished in 330 timesteps
+
+
+-------------------------------------------------------------10
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.6 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[0 1 0 ... 0 2 1]
+ [0 1 0 ... 1 0 1]
+ [1 0 0 ... 1 1 0]
+ ...
+ [0 2 0 ... 1 2 2]
+ [2 0 0 ... 2 0 1]
+ [1 0 2 ... 0 0 2]]
+Standard Q-learning
+finished in 339 timesteps
+Dyna Q-learning
+finished in 206 timesteps
+
+-------------------------------------------------------------11
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.55 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[1 2 0 ... 1 0 0]
+ [1 2 2 ... 1 1 0]
+ [1 1 2 ... 0 0 1]
+ ...
+ [1 1 0 ... 2 1 1]
+ [2 2 0 ... 1 1 0]
+ [0 2 0 ... 0 2 2]]
+Standard Q-learning
+finished in 455 timesteps
+Dyna Q-learning
+finished in 238 timesteps
+
+------------------------------------------------------12
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.65 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+
+SOLUTION POLICY
+[[0 0 1 ... 0 1 2]
+ [0 1 1 ... 2 1 1]
+ [2 0 0 ... 1 0 2]
+ ...
+ [1 0 2 ... 1 1 2]
+ [1 1 2 ... 1 2 2]
+ [0 2 2 ... 0 1 1]]
+Standard Q-learning
+finished in 516 timesteps
+Dyna Q-learning
+finished in 308 timesteps
+
+---------------------------------------------------13
+
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 1.2 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[2 1 2 ... 2 1 1]
+ [0 1 2 ... 1 0 0]
+ [0 1 2 ... 0 1 1]
+ ...
+ [1 1 1 ... 0 0 2]
+ [2 0 2 ... 0 1 1]
+ [0 0 1 ... 1 1 0]]
+Standard Q-learning
+finished in 408 timesteps
+Dyna Q-learning
+finished in 393 timesteps
+
+-------------------------------------------------14 
+
+#The following are the parameters to test:
+learning_rate = 0.1 #Learning rate
+discount = 0.3 #Discount factor
+dyna_q_iter = 100 #Number of dyna-Q iterations
+num_divs = 40 #Number of division for Q-matrix
+threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
+
+SOLUTION POLICY
+[[1 1 0 ... 1 2 1]
+ [2 2 0 ... 2 1 0]
+ [0 1 2 ... 1 2 1]
+ ...
+ [0 1 2 ... 0 2 2]
+ [1 0 0 ... 1 1 0]
+ [2 1 2 ... 1 1 1]]
+Standard Q-learning
+finished in 346 timesteps
+Dyna Q-learning
+finished in 251 timesteps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
