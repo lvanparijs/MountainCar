@@ -1,12 +1,14 @@
+import csv
+
 import numpy as np
 import math
 import random
 import pygame
-import sys
 import time
-from tempfile import TemporaryFile
 import matplotlib.pyplot as plt
-from collections import Counter
+from numpy import savetxt
+import pandas as pd
+import plotly.express as px
 
 def gen_points(amount, min, max, w, h, tb):
     pts = []
@@ -35,7 +37,7 @@ g_force = -0.0025 #Gravity
 learning_rate = 0.1 #Learning rate
 discount = 0.618 #Discount factor
 dyna_q_iter = 100 #Number of dyna-Q iterations
-num_divs = 40 #Number of division for Q-matrix
+num_divs = 100 #Number of division for Q-matrix
 threshold_timesteps = 250 #How few timesteps do we want/ How fast should the agent complete the tast
 
 #These should not be changed
@@ -69,7 +71,12 @@ positionVector = np.arange(min_pos, max_pos, (max_pos-min_pos) / num_divs)
 pos = []
 vel = []
 
-def q_learning(divs):
+reward_q = []
+reward_dyna_q = []
+final_iter_q = 0
+final_iter_dyna_q = 0
+
+def q_learning(divs, reward_q):
     #Initialise Q-mattrix randomly
     q_table = np.random.rand(divs,divs,3)
     t_steps = threshold_timesteps+1
@@ -108,8 +115,9 @@ def q_learning(divs):
             q_table[a][b][action] += learning_rate*((reward + discount * np.max(q_table[a_][b_][:])) - q_table[a][b][action])
             t_steps += 1
 
+        reward_q += [tot_r]
         print("[Iteration " + str(i) + " finished after "+ str(t_steps)+" timesteps]")
-
+        final_iter_q = i
     #Simulate the learned policy
     solution_policy = np.argmax(q_table, axis=2)
     print("SOLUTION POLICY")
@@ -163,7 +171,7 @@ def run_episode(policy=None, render=False):
     pygame.quit()
     return tot_r
 
-def dyna_q(divs, dyna_q_iters):
+def dyna_q(divs, dyna_q_iters, reward_dyna_q):
     #Initialise Q-mattrix randomly
     q_table = np.random.rand(divs,divs,3)
 
@@ -214,9 +222,9 @@ def dyna_q(divs, dyna_q_iters):
                 (da, db, dact) = random.choice(model_list)
                 (dr, da_, db_) = model[da, db, dact]
                 q_table[da][db][dact] += learning_rate*((dr + discount * np.max(q_table[da_][db_][:])) - q_table[da][db][dact])
-
+        reward_dyna_q += [tot_r]
         print("[Iteration " + str(i) + " finished after "+ str(t_steps)+" timesteps]")
-
+        final_iter_dyna_q = i
     #Simulate the learned policy
     solution_policy = np.argmax(q_table, axis=2)
     print("SOLUTION POLICY")
@@ -245,22 +253,55 @@ def plot_q_matrix(q):
     plt.ylabel("speed")
     plt.show()
 
-#for _ in range(1,10):
-#    num_divs = _*5
-##    q = q_learning(num_divs)
-#    np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
-q = q_learning(num_divs)
-np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
-q = dyna_q(num_divs,dyna_q_iter)
-np.save("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
-qmat = np.load("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy")
-print("Standard Q-learning")
-run_episode(qmat, True)
-plot_q_matrix(qmat)
-print("Dyna Q-learning")
+
+#q = q_learning(num_divs, reward_q)
+#np.save("qMatrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
+
+#q = dyna_q(num_divs,dyna_q_iter,reward_dyna_q)
+#np.save("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy", q)
 qmat = np.load("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy")
+print("Dyna Q-learning")
 run_episode(qmat, True)
 plot_q_matrix(qmat)
+#
+#x=[]
+#with open('reward_q.csv', 'r') as csvfile:
+#    plots= csv.reader(csvfile, delimiter=',')
+#    for row in plots:
+#        x.append(row[0])
+
+#y=np.linspace(1, len(x),len(x))
+#xx = []
+#for i in range(len(x)):
+#    xx += [float(x[i])+iter_max]
+
+#plt.plot(y,xx,label='Standard Q')
+#x = []
+
+#with open('reward_dyna_q.csv', 'r') as csvfile:
+#    plots= csv.reader(csvfile, delimiter=',')
+#    for row in plots:
+#        x.append(row[0])
+
+#y=np.linspace(1, len(x),len(x))
+#xx = []
+#for i in range(len(x)):
+#    xx += [float(x[i])+iter_max]
+
+#plt.plot(y,xx,label='Dyna-Q')
+
+#plt.title('Reward over time')
+
+#plt.xlabel('Timesteps')
+#plt.ylabel('Reward')
+#plt.legend()
+#plt.show()
+
+
+#print("Dyna Q-learning")
+#qmat = np.load("dynaq100Matrix_"+str(iter_max)+"iters_"+str(num_divs)+"divs.npy")
+#run_episode(qmat, True)
+#plot_q_matrix(qmat)
 
 #[Iteration 671 finished after 226 timesteps] for normal
 #[Iteration 14 finished after 250 timesteps]
